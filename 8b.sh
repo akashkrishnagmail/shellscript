@@ -1,21 +1,19 @@
-cho ‘Enter the login name of the user:”
-read user
-period=0
-while [ true ]
-do
-var=`who | grep –w “$user”`
-len=`echo “$var | wc –c`
-if [ $len –gt 1 ]
+if [ $# -eq 1 ]
 then
-echo “$user logged in $tm seconds”
-exit
-else
-sleep 1
-tm=`expr $tm + 1`
+	var=`grep -owi $1 /etc/passwd`
+	if [ $? -eq 0 ]
+	then
+		sleep 5s
+		success=`who | grep -wo "$var"`
+		if [ $? -eq 0 ]
+		then
+			echo "Login Success"
+		else 
+			echo "Login Not Success"
+		fi
+	else
+		echo "User Doesn't Exists"
+	fi
+else 
+	echo "Please provide 1 argument"
 fi
-if [ $tm –eq 61 ]
-then
-echo “$user did not login within 1 minute”
-exit
-fi
-done
